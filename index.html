@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gotham Signal Chat</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Chats">
+        <div class="brand">
+          <div class="logo-mark">
+            <img src="Batman-Logo-Evolution-1-1155x770.png" alt="Batman logo" />
+          </div>
+          <div>
+            <p>Gotham Signal</p>
+            <span>Secure dispatch</span>
+          </div>
+        </div>
+
+        <div class="search-box">
+          <span aria-hidden="true">/</span>
+          <input type="search" placeholder="Search channels" aria-label="Search channels" />
+        </div>
+
+        <nav class="chat-list" aria-label="Chat channels">
+          <button class="chat-card active" type="button">
+            <span class="avatar bat">B</span>
+            <span>
+              <strong>Batcave</strong>
+              <small>Alfred is typing</small>
+            </span>
+            <em>2</em>
+          </button>
+          <button class="chat-card" type="button">
+            <span class="avatar">G</span>
+            <span>
+              <strong>GCPD</strong>
+              <small>Rooftop signal ready</small>
+            </span>
+          </button>
+          <button class="chat-card" type="button">
+            <span class="avatar">N</span>
+            <span>
+              <strong>Night Watch</strong>
+              <small>Patrol route shared</small>
+            </span>
+          </button>
+          <button class="chat-card" type="button">
+            <span class="avatar">A</span>
+            <span>
+              <strong>Arkham Alerts</strong>
+              <small>Quiet for now</small>
+            </span>
+          </button>
+        </nav>
+
+        <div class="status-panel">
+          <span class="pulse"></span>
+          <div>
+            <strong>Signal active</strong>
+            <small>Encrypted link stable</small>
+          </div>
+        </div>
+      </aside>
+
+      <section class="chat-panel" aria-label="Active chat">
+        <header class="chat-header">
+          <div class="channel-title">
+            <span class="avatar bat">B</span>
+            <div>
+              <h1>Batcave</h1>
+              <p>Alfred Pennyworth, Oracle, Nightwing</p>
+            </div>
+          </div>
+          <div class="header-actions" aria-label="Chat actions">
+            <button class="icon-button" type="button" title="Start call" aria-label="Start call">C</button>
+            <button class="icon-button" type="button" title="Open files" aria-label="Open files">[]</button>
+            <button class="icon-button" type="button" title="Settings" aria-label="Settings">*</button>
+          </div>
+        </header>
+
+        <div class="mission-strip" aria-label="Current priority">
+          <span>Priority</span>
+          <strong>Protect the Narrows convoy</strong>
+          <button type="button" id="briefingButton">Briefing</button>
+        </div>
+
+        <div class="messages" id="messages" aria-live="polite">
+          <article class="message incoming">
+            <span class="avatar">O</span>
+            <div class="bubble">
+              <div class="meta">
+                <strong>Oracle</strong>
+                <time>21:12</time>
+              </div>
+              <p>Traffic cameras show a blockade forming near the bridge. Sending the clean route now.</p>
+            </div>
+          </article>
+
+          <article class="message outgoing">
+            <div class="bubble">
+              <div class="meta">
+                <strong>You</strong>
+                <time>21:14</time>
+              </div>
+              <p>Route received. Keep the east corridor dark until the convoy passes.</p>
+            </div>
+          </article>
+
+          <article class="message incoming">
+            <span class="avatar">A</span>
+            <div class="bubble">
+              <div class="meta">
+                <strong>Alfred</strong>
+                <time>21:16</time>
+              </div>
+              <p>I have prepared the backup vehicle and a thermos. The latter is not optional.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="quick-replies" aria-label="Quick replies">
+          <button type="button">Send coordinates</button>
+          <button type="button">Request backup</button>
+          <button type="button">Go silent</button>
+        </div>
+
+        <form class="composer" id="composer">
+          <button class="icon-button" type="button" title="Attach file" aria-label="Attach file">+</button>
+          <input id="messageInput" type="text" autocomplete="off" placeholder="Message the Batcave" aria-label="Message" />
+          <button class="send-button" type="submit">Send</button>
+        </form>
+      </section>
+
+      <aside class="intel-panel" aria-label="Intel">
+        <div class="logo-spotlight">
+          <img src="Batman-Logo-Evolution-1-1155x770.png" alt="" />
+        </div>
+
+        <section class="intel-block">
+          <h2>Live Intel</h2>
+          <dl>
+            <div>
+              <dt>Mode</dt>
+              <dd>Stealth</dd>
+            </div>
+            <div>
+              <dt>ETA</dt>
+              <dd>08 min</dd>
+            </div>
+            <div>
+              <dt>Risk</dt>
+              <dd>Medium</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="intel-block">
+          <h2>Team</h2>
+          <div class="team-row">
+            <span class="avatar">O</span>
+            <span class="avatar">A</span>
+            <span class="avatar">N</span>
+            <span class="avatar bat">B</span>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <script src="src/app.js"></script>
+  </body>
+</html>
