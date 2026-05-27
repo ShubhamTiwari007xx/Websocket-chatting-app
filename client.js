@@ -1,3 +1,4 @@
+import { io } from '/socket.io/socket.io.esm.min.js';
 const socket = io();
 
 const messageContainer = document.querySelector("#messages");
@@ -11,26 +12,29 @@ const append = (message, position) => {
   messageElement.classList.add(position);
   messageContainer.append(messageElement);
   messageContainer.parentElement.scrollTop = messageContainer.parentElement.scrollHeight;
-  if(position =='left'){
+  if(position =='right'){
       audio.play();
-
   }
 };
 form.addEventListener('submit', (e)=>{
   e.preventDefault();
   const message = messageInput.value
-  append(`You: ${message} `, "right")
-  socket.emit('send', message)
+    append(`You: ${message}`, "left")
+  socket.emit('send',({
+      name: username,
+      message: message,
+  }))
   messageInput.value= ''
 })
+
 const name = prompt("Enter your name to join");
 socket.emit("new-user-joined", name);
 
 socket.on("user-joined", (name) => {
-  append(`${name} joined the chat`, 'left');
+  append(`${name} joined the chat`, "left");
 });
 socket.on("receive", (data) => {
-  append(`${data.name} : ${data.message}`, 'left');
+  append(`${data.name} : ${data.message}`, "left");
 });
 socket.on("left",name =>{
   append(`${name} left the chat`, "left")
