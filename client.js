@@ -12,16 +12,16 @@ const append = (message, position) => {
   messageElement.classList.add(position);
   messageContainer.append(messageElement);
   messageContainer.parentElement.scrollTop = messageContainer.parentElement.scrollHeight;
-  if(position =='right'){
+  if(position =='left'){
       audio.play();
   }
 };
 form.addEventListener('submit', (e)=>{
   e.preventDefault();
   const message = messageInput.value
-    append(`You: ${message}`, "left")
+    append(`You: ${message}`, "right")
   socket.emit('send',({
-      name: username,
+      username: name,
       message: message,
   }))
   messageInput.value= ''
@@ -34,7 +34,7 @@ socket.on("user-joined", (name) => {
   append(`${name} joined the chat`, "left");
 });
 socket.on("receive", (data) => {
-  append(`${data.name} : ${data.message}`, "left");
+  append(`${data.username} : ${data.message}`, "left");
 });
 socket.on("left",name =>{
   append(`${name} left the chat`, "left")

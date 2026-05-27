@@ -27,7 +27,7 @@ socket.on("send", async (data) => {
          text: data.message
       }
    });
-   io.emit("receive", data);
+   socket.broadcast.emit("receive", data);
 });
 
 socket.on('disconnect', () => {
