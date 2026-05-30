@@ -26,15 +26,16 @@ socket.on("send", async (data) => {
          username: data.username,
          text: data.message
       }
-   });
+   })
    socket.broadcast.emit("receive", data);
 });
+
 
 socket.on('disconnect', () => {
       socket.broadcast.emit('left', users[socket.id])
       delete users[socket.id];
     });
-  });
+  }); 
 
   server.listen(port, () => {
     console.log(`Chat server running at http://localhost:${port}`);
