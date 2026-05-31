@@ -15,10 +15,17 @@ const users = {};
 app.use(express.static(path.join(__dirname)));
 
 io.on('connection', (socket) => {
-  socket.on('new-user-joined', (username) => {
+  socket.on('new-user-joined',async (username) => {
     users[socket.id] = username;
     socket.broadcast.emit('user-joined', username);
+  
+    const history = await prisma.message.findMany({
+      orderBy :{ createdAt : 'asc'},
+      take: 50,
+    })
+    socket.emit('mess-history', history)
   });
+
 
 socket.on("send", async (data) => {
    await prisma.message.create({
@@ -28,6 +35,14 @@ socket.on("send", async (data) => {
       }
    })
    socket.broadcast.emit("receive", data);
+});
+
+socket.on('typing', (username) => {
+  socket.broadcast.emit('user-typing', username);
+});
+
+socket.on('stop-typing', (username) => {
+  socket.broadcast.emit('user-stop-typing', username);
 });
 
 
