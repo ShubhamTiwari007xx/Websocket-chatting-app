@@ -1,4 +1,4 @@
- import bcrypt from "bcrypt";
+ import bcrypt, { genSaltSync } from "bcrypt";
 import { prisma } from "../db.js";
 import jwt from "jsonwebtoken";
  export async function register() {
@@ -7,6 +7,5 @@ import jwt from "jsonwebtoken";
    if(!username , !password, !email){
      return res.json({ message: "All fields are required" });
    }
-  const 
-   const hashedpassword = bcrypt.
+   const hashedpassword = bcrypt.hashSync(pasword, bcrypt.genSaltSync(10))
 }
