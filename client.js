@@ -31,6 +31,7 @@ form.addEventListener('submit', (e) => {
     message: message,
   }))
   messageInput.value = ''
+  typingIndicator.innerText = ''
 })
 
 messageInput.addEventListener('input', () => {
@@ -40,12 +41,14 @@ messageInput.addEventListener('input', () => {
     socket.emit('stop-typing', name);
   }, 2000);
 })
+
 socket.on("user-joined", (name) => {
   append(`${name} joined the chat`, "left");
 });
 
 socket.on('user-typing', (username) => {
-  typingIndicator.innerText = `${username} is typing...`
+  typingIndicator.innerText = `${username} is typing..`
+  typingIndicator.innerText = `${username} is typing......`
 })
 
 socket.on('user-stop-typing', () => {
