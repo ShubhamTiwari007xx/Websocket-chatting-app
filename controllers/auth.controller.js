@@ -7,6 +7,6 @@ import jwt from "jsonwebtoken";
    if(!username , !password, !email){
      return res.json({ message: "All fields are required" });
    }
-
+  const 
    const hashedpassword = bcrypt.genSalt(password,10)
 }
