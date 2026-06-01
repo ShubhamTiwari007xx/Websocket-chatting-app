@@ -8,5 +8,5 @@ import jwt from "jsonwebtoken";
      return res.json({ message: "All fields are required" });
    }
   const 
-   const hashedpassword = bcrypt.genSalt(password,10)
+   const hashedpassword = bcrypt.
 }
