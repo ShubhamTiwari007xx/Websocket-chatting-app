@@ -1,11 +1,51 @@
- import bcrypt, { genSaltSync } from "bcrypt";
+import bcrypt, { genSaltSync } from "bcrypt";
 import { prisma } from "../db.js";
 import jwt from "jsonwebtoken";
- export async function register() {
-    const {username , password , email} = req.body ,
-    
-   if(!username , !password, !email){
-     return res.json({ message: "All fields are required" });
-   }
-   const hashedpassword = bcrypt.hashSync(pasword, bcrypt.genSaltSync(10))
-}
+
+
+export const register = async (req, res) => {
+    console.log("Executing register v2 with name field");
+    try {
+        const { username, email, password } = req.body;
+        if (!username || !email || !password) {
+            return res.json({ message: "All fields are required" });
+        }
+
+        const hashedPassword = bcrypt.hashSync(
+            password,
+            bcrypt.genSaltSync(10)
+        );
+
+        const user = await prisma.user.create({
+            data: {
+                username,
+                email,
+                password: hashedPassword,
+            },
+        });
+
+        const token = jwt.sign(
+            { userId: user.id },
+            process.env.JWT_SECRET,
+            { expiresIn: "30d" }
+        );
+
+        console.log("Register is working good");
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false, // true in production
+            sameSite: "lax",
+            maxAge: 30 * 24 * 60 * 60 * 1000
+        });
+        res.json({ 
+            message: "User created successfully", 
+            token,
+            user: { username: user.username }
+        });
+
+    } catch (error) {
+        console.log(error.message);
+        res.json({ message: error.message });
+    }
+};
