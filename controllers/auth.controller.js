@@ -1,6 +1,7 @@
 import bcrypt, { genSaltSync } from "bcrypt";
 import { prisma } from "../db.js";
 import jwt from "jsonwebtoken";
+import { json } from "express";
 
 
 export const register = async (req, res) => {
@@ -38,8 +39,8 @@ export const register = async (req, res) => {
             sameSite: "lax",
             maxAge: 30 * 24 * 60 * 60 * 1000
         });
-        res.json({ 
-            message: "User created successfully", 
+        res.json({
+            message: "User created successfully",
             token,
             user: { username: user.username }
         });
@@ -49,3 +50,43 @@ export const register = async (req, res) => {
         res.json({ message: error.message });
     }
 };
+
+
+export const login = async (req, res) => {
+    try {
+        const { username, password } = req.body
+        if (!email || !password) {
+            res.json({ message: "pls enter username and password" })
+        }
+
+        const user = await prisma.user.findUnique({
+            where: {
+                email: email
+
+            }
+        })
+
+        if (!bcrypt.compare(password, user.hashedPassword)) {
+            res.json({ message: 'incorrect password' })
+        }
+
+        const token = jwt.sign(
+            { userId: user.id },
+            process.env.JWT_SECRET,
+            { expiresIn: "1d" }
+        )
+
+        console.log('login is working good')
+
+        res.cookie = ("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            maxAge: 30 * 24 * 60 * 60 * 1000
+        })
+    } catch (err) {
+        res.json({ message:err.message })
+    }
+
+
+}

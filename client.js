@@ -1,6 +1,7 @@
 import { io } from '/socket.io/socket.io.esm.min.js';
 const socket = io();
 
+
 const messageContainer = document.querySelector("#messages");
 const form = document.querySelector("#messageForm");
 const messageInput = document.querySelector("#messageInput");
@@ -49,6 +50,13 @@ socket.on("user-joined", (name) => {
 socket.on('user-typing', (username) => {
   typingIndicator.innerText = `${username} is typing..`
   typingIndicator.innerText = `${username} is typing......`
+})
+
+socket.on("private-mess",(data) =>{
+  append(
+    `(Private) ${data.from}:${data.message}`,
+    "left"
+  )
 })
 
 socket.on('user-stop-typing', () => {

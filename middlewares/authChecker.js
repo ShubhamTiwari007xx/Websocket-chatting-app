@@ -23,6 +23,12 @@ export const verifyToken = async (req, res, next) => {
                 id: decoded.userId
             }
         })
+         if (!user) {
+            return res.status(401).json({
+                message: "User not found"
+            });
+        }
+
         req.user = user
         req.userId = user.id
         
