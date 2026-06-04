@@ -7,6 +7,7 @@
   <title>Bat Signal Chat</title>
   <link  rel="stylesheet" href="src/styles.css" />
   <script type="module" src="client.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
@@ -18,12 +19,11 @@
         <p id="status">Connecting...</p>
       </div>
     </header>
+   <div id="online-users">
+    <h4>Online Users</h4>
 
-    <section class="setup" aria-label="Your name">
-      <label for="nameInput">Your name</label>
-      <input id="nameInput" type="text" value="Guest" autocomplete="name" />
-      <button id="joinButton" type="button">Join</button>
-    </section>
+    <div id="users-list"></div>
+</div>
     <div class="message-container">
       <section id="messages" class="messages" aria-live="polite">
         <p class="message message--system">Open this page in two tabs, join, then send a message.</p>
