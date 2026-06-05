@@ -82,6 +82,12 @@ io.emit("online-users", Object.keys(users));
     }
   });
 });
+
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
 server.listen(port, () => {
   console.log(`Chat server running at http://localhost:${port}`);
 });
