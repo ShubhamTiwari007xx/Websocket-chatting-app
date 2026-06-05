@@ -11,33 +11,50 @@
 </head>
 
 <body>
-  <main class="chat">
-    <header class="chat__header">
-      <img src="Batman-Logo-Evolution-1-1155x770.png" alt="Batman logo" />
-      <div>
-        <h1>Bat Signal Chat</h1>
-        <p id="status">Connecting...</p>
+  <main class="app-shell">
+    <aside class="online-panel" aria-label="Online users">
+      <div class="online-panel__header">
+        <div>
+          <p class="eyebrow">Online</p>
+          <h2>Users</h2>
+        </div>
+        <span id="user-count" class="user-count">0</span>
       </div>
-    </header>
-   <div id="online-users">
-    <h4>Online Users</h4>
 
-    <div id="users-list"></div>
-</div>
-    <div class="message-container">
-      <section id="messages" class="messages" aria-live="polite">
-        <p class="message message--system">Open this page in two tabs, join, then send a message.</p>
-      </section>
-   </div> 
-   <div id="typing-indicator"></div>
+      <button id="public-room" class="room-button is-active" type="button">
+        <span class="presence-dot presence-dot--public"></span>
+        <span>
+          <strong>Public chat</strong>
+          <small>Everyone online</small>
+        </span>
+      </button>
+
+      <div id="users-list" class="users-list" role="list"></div>
+    </aside>
+
+    <section class="chat" aria-label="Chat room">
+      <header class="chat__header">
+        <img src="Batman-Logo-Evolution-1-1155x770.png" alt="Batman logo" />
+        <div>
+          <h1>Bat Signal Chat</h1>
+          <p id="status">Connecting...</p>
+        </div>
+        <div id="chat-target" class="chat-target">Public chat</div>
+      </header>
+
+      <div class="message-container">
+        <section id="messages" class="messages" aria-live="polite">
+          <p class="message message--system">Open this page in two tabs, join, then send a message.</p>
+        </section>
+      </div>
+
+      <div id="typing-indicator" class="typing-indicator"></div>
+
       <form id="messageForm" class="composer">
-     
         <input id="messageInput" type="text" placeholder="Type a message..." autocomplete="off" />
-
         <button type="submit">Send</button>
-   
-    </form>
-
+      </form>
+    </section>
   </main>
 </body>
 

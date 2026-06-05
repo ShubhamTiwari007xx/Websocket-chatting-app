@@ -1,4 +1,6 @@
 import { io } from '/socket.io/socket.io.esm.min.js';
+
+const name = prompt("Enter your name") || "Guest";
 let selectedUser = null;
 const socket = io();
 const messageContainer = document.querySelector("#messages");
@@ -6,8 +8,13 @@ const form = document.querySelector("#messageForm");
 const messageInput = document.querySelector("#messageInput");
 const typingIndicator = document.querySelector("#typing-indicator");
 const usersList = document.querySelector("#users-list");
+const userCount = document.querySelector("#user-count");
+const publicRoomButton = document.querySelector("#public-room");
+const chatTarget = document.querySelector("#chat-target");
+const status = document.querySelector("#status");
 const audio = new Audio('noti.mp3');
 let typingTimeout;
+
 const append = (message, position) => {
   const messageElement = document.createElement("div");
 
@@ -20,27 +27,69 @@ const append = (message, position) => {
     messageContainer.parentElement.scrollHeight;
 
   if (position === "left") {
-    audio.play();
+    audio.play().catch(() => {});
   }
+};
+
+const setChatTarget = (username) => {
+  selectedUser = username;
+  chatTarget.innerText = username ? `Private: ${username}` : "Public chat";
+  publicRoomButton.classList.toggle("is-active", !username);
+
+  usersList.querySelectorAll(".user-card").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.username === username);
+  });
+};
+
+
+const renderOnlineUsers = (users) => {
+  const otherUsers = users.filter((user) => user !== name);
+  userCount.innerText = String(users.length);
+  usersList.innerHTML = "";
+
+  if (selectedUser && !otherUsers.includes(selectedUser)) {
+    setChatTarget(null);
+  }
+
+  if (otherUsers.length === 0) {
+    const emptyState = document.createElement("p");
+    emptyState.className = "empty-users";
+    emptyState.innerText = "No other users online";
+    usersList.appendChild(emptyState);
+    return;
+  }
+
+  otherUsers.forEach((user) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "user-card";
+    button.dataset.username = user;
+    button.innerHTML = `
+    
+      <span class="presence-dot"></span>
+      <span>
+        <strong></strong>
+        <small>Send private message</small>
+      </span>
+    `;
+    button.querySelector("strong").innerText = user;
+    button.classList.toggle("is-active", user === selectedUser);
+    button.addEventListener("click", () => setChatTarget(user));
+    usersList.appendChild(button);
+  });
 };
 
 socket.on("connect", () => {
   console.log("Connected:", socket.id);
+  status.innerText = `Connected as ${name}`;
+});
+
+socket.on("disconnect", () => {
+  status.innerText = "Disconnected";
 });
 
 socket.on("online-users", (users) => {
-  usersList.innerHTML = "";
-
-    users.forEach(user => {
-      if(user === name) return;
-        const div = document.createElement("div");
-        div.innerText = user;
-
-        div.addEventListener("click", ()=>{
-          selectedUser = user;
-        })
-        usersList.appendChild(div);
-    });
+  renderOnlineUsers(users);
 });
 
 
@@ -78,33 +127,37 @@ socket.on("left", (name) => {
 });
 
 
-const name = prompt("Enter your name") || "Guest";
-
 socket.emit("new-user-joined", name);
+status.innerText = `Connected as ${name}`;
+
+publicRoomButton.addEventListener("click", () => {
+  setChatTarget(null);
+});
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+  const message = messageInput.value.trim();
 
-  const message = messageInput.value;
+  if (!message) return;
 
   if (selectedUser) {
-  socket.emit("private-mess", {
-    to: selectedUser,
-    message
-  });
+    socket.emit("private-mess", {
+      to: selectedUser,
+      message
+    });
 
-  append(
-    `(Private to ${selectedUser}) ${message}`,
-    "right"
-  );
-} else {
-  socket.emit("send", {
-    username: name,
-    message
-  });
+    append(
+      `(Private to ${selectedUser}) ${message}`,
+      "right"
+    );
+  } else {
+    socket.emit("send", {
+      username: name,
+      message
+    });
 
-  append(`You: ${message}`, "right");
-}
+    append(`You: ${message}`, "right");
+  }
 
   messageInput.value = "";
   typingIndicator.innerText = "";
