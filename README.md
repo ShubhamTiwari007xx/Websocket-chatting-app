@@ -32,6 +32,9 @@ A real-time chat application built using Socket.IO, Node.js, Express, Prisma, an
 
 ## How It Works
 
+##```live link 
+https://websocket-chatting-app.onrender.com
+
 ### Public Messaging
 Messages are broadcast to all connected users in real time using Socket.IO events.
 
@@ -42,5 +45,3 @@ Each connected user is mapped to a unique Socket ID.
 users[username] = socket.id;
 socketToUser[socket.id] = username;
 
-```live link 
-https://websocket-chatting-app.onrender.com
