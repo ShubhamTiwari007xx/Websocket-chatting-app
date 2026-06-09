@@ -4,7 +4,7 @@
 A real-time chat application built using Socket.IO, Node.js, Express, Prisma, and PostgreSQL. The application supports public messaging, private messaging, online user tracking, typing indicators, and persistent chat history.
 
 ## Features
-
+what i learned
 - Real-time public chat
 - Private messaging between online users
 - Live online users list
