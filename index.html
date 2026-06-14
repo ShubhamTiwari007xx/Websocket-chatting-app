@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Manager</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: #fff; }
+        #log {background: #000; border: 1px solid #333
+        ; padding: 10px; height: 300px; overflow-y: scroll; margin-top: 20px;}
+        .status-on {color: #00ff00}
+        .status-off {color: #ff0000}
+    </style>
+</head>
+<body>
+    <h1>WebSocket broadcast Manager</h1>
+    <p id="status" class="status-off">Connecting....</p>
+
+    <form id="message-form">
+        <input type="text" id="message-input" placeholder="Enter message..." />
+        <button type="submit">Deploy the message</button>
+    </form>
+
+    <h3>live stream logs</h3>
+    <div id="log"></div>
+</body>
+<script >
+    const statusEl = document.getElementById('status');
+    const logEl = document.getElementById('log');
+    const inputEl = document.getElementById('message-input');
+
+    const socket = new WebSocket('ws://localhost:8080');
+
+
+    const appendLog = (label , message )=>{
+        const entry = `[${new Date().toLocaleTimeString()}] ${label}: ${message}`;
+        logEl.textContent += entry + '\n';
+    };
+
+    socket.addEventListener('open', ()=>{
+        statusEl.textContent = 'Connected';
+        statusEl.className = 'status-on';
+        appendLog('System', 'WebSocket connection established');
+    });
+    
+    socket.addEventListener('close', ()=>{
+        statusEl.textContent = 'Disconnected';
+        statusEl.className = 'status-off';
+        appendLog('System', 'tunnel collapsed');
+    });
+        
+    socket.addEventListener('message', (event)=>{
+        appendLog('Received', event.data);
+    });
+    
+document.getElementById('message-form')
+.addEventListener('submit', (e)=>{
+    e.preventDefault();
+
+    if(socket.readyState ==! WebSocket.OPEN){
+        appendLog('Error', 'WebSocket is not connected');
+        return;
+    }
+
+    const message = inputEl.value;
+    socket.send(message);
+    inputEl.value = '';
+})
+</script>
+</html>
