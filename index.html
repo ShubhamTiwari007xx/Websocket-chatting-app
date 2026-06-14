@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,4 +68,64 @@ document.getElementById('message-form')
     inputEl.value = '';
 })
 </script>
+=======
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bat Signal Chat</title>
+  <link  rel="stylesheet" href="src/styles.css" />
+  <script type="module" src="client.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+  <main class="app-shell">
+    <aside class="online-panel" aria-label="Online users">
+      <div class="online-panel__header">
+        <div>
+          <p class="eyebrow">Online</p>
+          <h2>Users</h2>
+        </div>
+        <span id="user-count" class="user-count">0</span>
+      </div>
+
+      <button id="public-room" class="room-button is-active" type="button">
+        <span class="presence-dot presence-dot--public"></span>
+        <span>
+          <strong>Public chat</strong>
+          <small>Everyone online</small>
+        </span>
+      </button>
+
+      <div id="users-list" class="users-list" role="list"></div>
+    </aside>
+
+    <section class="chat" aria-label="Chat room">
+      <header class="chat__header">
+        <img src="Batman-Logo-Evolution-1-1155x770.png" alt="Batman logo" />
+        <div>
+          <h1>Bat Signal Chat</h1>
+          <p id="status">Connecting...</p>
+        </div>
+        <div id="chat-target" class="chat-target">Public chat</div>
+      </header>
+
+      <div class="message-container">
+        <section id="messages" class="messages" aria-live="polite">
+          <p class="message message--system">Open this page in two tabs, join, then send a message.</p>
+        </section>
+      </div>
+
+      <div id="typing-indicator" class="typing-indicator"></div>
+
+      <form id="messageForm" class="composer">
+        <input id="messageInput" type="text" placeholder="Type a message..." autocomplete="off" />
+        <button type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+</body>
+
+>>>>>>> 801397021266716ae2dbf225471dde2e8fd6de72
 </html>
